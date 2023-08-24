@@ -1,0 +1,39 @@
+.sorter {
+    float: right;
+    position: relative;
+    top: 12px;
+    width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.sorter::before,
+.sorter::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 4px;
+}
+
+.sorter::before {
+    margin-top: -3.5px;
+    border-bottom-color: #aaaaaa;
+}
+
+.sorter::after {
+    margin-top: 3px;
+    border-top-color: #aaaaaa;
+}
+
+.sorter.increase::before {
+    border-bottom-color: #347af6;
+}
+
+.sorter.decrease::after {
+    border-top-color: #347af6;
+}

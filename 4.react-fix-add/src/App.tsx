@@ -2,8 +2,8 @@ import React, { useRef, useState, useCallback } from 'react';
 import './index.css';
 
 async function increaseRemote(a: number) {
-  await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
-  return a + 1;
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 1e3));
+    return a + 1;
 }
 
 /**
@@ -14,54 +14,51 @@ async function increaseRemote(a: number) {
  * 请找出下面代码的实现问题并改正。
  */
 function App() {
-  const [count, setCount] = useState(0);
-  const loading = useRef(false);
+    const [count, setCount] = useState(0);
+    const [loading, setLoading] = useState(false);
 
-  const increase = useCallback(async () => {
-    if (loading.current) {
-      return;
-    }
-    loading.current = true;
-    const data = await increaseRemote(count);
-    setCount(data);
-    loading.current = false;
-  }, [count]);
+    const handleClick = async (num: number) => {
+        if (loading) {
+            return;
+        }
 
-  const handleClick = (num) => {
-    if (num === 1) {
-      increase();
-    } else if (num === 2) {
-      increase();
-      increase();
-    }
-  };
+        setLoading(true);
+        let number = count;
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div>请按照题目要求，修正以下程序</div>
-      </header>
-      <section className="App-content">
-        <button
-          disabled={loading.current}
-          onClick={() => {
-            handleClick(1);
-          }}
-        >
-          +1
-        </button>
-        <button
-          disabled={loading.current}
-          onClick={() => {
-            handleClick(2);
-          }}
-        >
-          +2
-        </button>
-        <p>数值：{count}</p>
-      </section>
-    </div>
-  );
+        for (let i = 0; i < num; i++) {
+            number = await increaseRemote(number);
+        }
+
+        setCount(number);
+        setLoading(false);
+    };
+
+    return (
+        <div className="App">
+            <header className="App-header">
+                <div>请按照题目要求，修正以下程序</div>
+            </header>
+            <section className="App-content">
+                <button
+                    disabled={loading}
+                    onClick={() => {
+                        handleClick(1);
+                    }}
+                >
+                    +1
+                </button>
+                <button
+                    disabled={loading}
+                    onClick={() => {
+                        handleClick(2);
+                    }}
+                >
+                    +2
+                </button>
+                <p>数值：{count}</p>
+            </section>
+        </div>
+    );
 }
 
 export default App;
